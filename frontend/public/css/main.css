@@ -1,0 +1,23 @@
+html {
+    font-family: 'Roboto', sans-serif;
+    background: gainsboro;
+}
+
+html, body {
+    height: 100%;
+}
+
+li {
+    list-style-type: none;
+    width: auto;
+}
+
+body {
+    width: 5000px;
+    overflow: scroll;
+}
+
+.panel {
+    background: white;
+    padding: 0.556em;
+}

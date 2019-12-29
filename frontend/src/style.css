@@ -1,0 +1,15 @@
+.name {
+    font-size: large;
+    color: red;
+    text-transform: capitalize;
+    text-decoration: none;
+}
+
+.name.selected {
+    color: black;
+}
+
+a.name {
+    background: white;
+    padding: 1em;
+}
