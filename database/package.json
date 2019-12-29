@@ -1,0 +1,31 @@
+{
+  "name": "database",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "db:init": "node_modules/.bin/sequelize-cli init",
+    "db:migrate": "node_modules/.bin/sequelize-cli db:migrate",
+    "db:migrate:create": "node_modules/.bin/sequelize-cli migration:generate --name",
+    "db:migrate:undo": "node_modules/.bin/sequelize-cli db:migrate:undo",
+    "db:migrate:undo:all": "node_modules/.bin/sequelize-cli db:migrate:undo:all",
+    "db:migrate:undo:all:name": "node_modules/.bin/sequelize-cli db:migrate:undo:all --to",
+    "db:model:create": "node_modules/.bin/sequelize-cli model:generate --name",
+    "db:seed:all": "node_modules/.bin/sequelize-cli db:seed:all",
+    "db:seed:create": "node_modules/.bin/sequelize-cli seed:generate --name",
+    "db:seed:name": "node_modules/.bin/sequelize-cli db:seed --seed",
+    "db:seed:undo": "node_modules/.bin/sequelize-cli db:seed:undo",
+    "db:seed:undo:all": "node_modules/.bin/sequelize-cli db:seed:undo:all",
+    "db:seed:undo:name": "node_modules/.bin/sequelize-cli db:seed:undo --seed",
+    "test": "echo <arg> && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "faker": "^4.1.0",
+    "pg": "^7.12.1",
+    "sequelize": "^5.21.1",
+    "sequelize-cli": "^5.5.1"
+  }
+}

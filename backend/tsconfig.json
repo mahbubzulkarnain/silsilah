@@ -1,0 +1,29 @@
+{
+  "compilerOptions": {
+    "outDir": "dist",
+    "sourceMap": true,
+    "module": "commonjs",
+    "target": "es2019",
+    "lib": [
+      "es7",
+      "dom"
+    ],
+    "downlevelIteration": true,
+    "allowJs": true,
+    "experimentalDecorators": true,
+    "esModuleInterop": true
+  },
+  "typedocOptions": {
+    "mode": "modules",
+    "out": "./dist/docs",
+    "theme": "default"
+  },
+  "include": [
+    "src/**/*",
+    "node_modules/@types/jest/index.d.ts"
+  ],
+  "exclude": [
+    "__tests__",
+    "node_modules"
+  ]
+}
