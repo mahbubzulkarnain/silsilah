@@ -1,7 +1,13 @@
 import {Couple} from "../Couples/interface";
 import {Children} from "../Children/interface";
 
+export enum ParentKey {
+  husband = "husband",
+  wife = "wife"
+}
+
 export interface People {
+    item: Couple[];
   id: string;
   address?: string;
   blood_type?: string;
@@ -15,10 +21,9 @@ export interface People {
   sure_name: string;
   createdAt?: string;
   updatedAt?: string;
-}
-
-export interface PeopleWithCouples extends People {
-  couples: [Couple] | []
+  couples: [Couple]
+  parent?: Parent
+  children?: [Children]
 }
 
 export interface Parent {
