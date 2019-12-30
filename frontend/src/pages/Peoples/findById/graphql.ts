@@ -2,7 +2,29 @@ import gql from 'graphql-tag';
 
 import client from '../../../utils/graphql'
 
-export const queryPeople = `id address blood_type date_of_birth date_of_death email gender nick_name phone profile_picture sure_name createdAt updatedAt`;
+export const queryPeopleDetail = `id address blood_type date_of_birth date_of_death email gender nick_name phone profile_picture sure_name createdAt updatedAt`;
+const queryParentBrother = `
+parent {
+    children {
+        child {
+            ${queryPeopleDetail}
+            couples {
+                husband {
+                    ${queryPeopleDetail}
+                }
+                wife {
+                    ${queryPeopleDetail}
+                }
+                children {
+                    child {
+                        ${queryPeopleDetail}
+                    }
+                }
+            }
+        }
+    }
+}
+`;
 
 export default async (peopleID: string) => {
     try {
@@ -10,27 +32,29 @@ export default async (peopleID: string) => {
             query: gql`
                 query People($peopleInput: PeopleInput) {
                     people(input: $peopleInput) {
-                        ${queryPeople}
+                        ${queryPeopleDetail}
                         parent {
                             husband {
-                                ${queryPeople}
+                                ${queryPeopleDetail}
+                                ${queryParentBrother}
                             }
                             wife {
-                                ${queryPeople}
+                                ${queryPeopleDetail}
+                                ${queryParentBrother}
                             }
                             children {
                                 child {
-                                    ${queryPeople}
+                                    ${queryPeopleDetail}
                                     couples {
                                         husband {
-                                            ${queryPeople}
+                                            ${queryPeopleDetail}
                                         }
                                         wife {
-                                            ${queryPeople}
+                                            ${queryPeopleDetail}
                                         }
                                         children {
                                             child {
-                                                ${queryPeople}
+                                                ${queryPeopleDetail}
                                             }
                                         }
                                     }
@@ -39,14 +63,14 @@ export default async (peopleID: string) => {
                         }
                         couples {
                             husband {
-                                ${queryPeople}
+                                ${queryPeopleDetail}
                             }
                             wife {
-                                ${queryPeople}
+                                ${queryPeopleDetail}
                             }
                             children {
                                 child {
-                                    ${queryPeople}
+                                    ${queryPeopleDetail}
                                 }
                             }
                         }
