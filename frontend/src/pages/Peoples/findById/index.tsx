@@ -4,10 +4,9 @@ import './style.css';
 import findById from "./graphql";
 
 import {useParams} from 'react-router-dom'
-import {Parent, People} from "../interface";
-import Card from "../../../component/Card";
-import LineageCouple from "../../../component/Lineage/Couple";
+import {Parent, ParentKey, People} from "../interface";
 import {Couple} from "../../Couples/interface";
+import Lineage from "../../../component/Lineage";
 
 interface FindById extends People {
   parent: Parent
@@ -15,20 +14,23 @@ interface FindById extends People {
 }
 
 export default () => {
+  const initialStatePeoples = ([] as Array<People>);
   const [isLoading, setLoading] = useState(true);
-  const [parent, setParent] = useState({
-    father: ({} as People),
-    mother: ({} as People)
-  });
-  const [peoples, setPeoples] = useState([{
-    id: "",
-    sure_name: "",
-    couples: [{id: "", sure_name: "", children: [{id: ""}]}]
-  }]);
+  const [peoples, setPeoples] = useState(initialStatePeoples);
   const {peopleID} = useParams();
 
-  const dataCoupleParser = (people: People, item: Couple) => {
-    let couple: any = {...({} as People), children: []};
+  const hasParentBrother = (key: ParentKey, response: FindById) => (
+    response.parent &&
+    response.parent[key] &&
+    response.parent[key]?.parent &&
+    response.parent[key]?.parent?.children &&
+    response.parent[key]?.parent?.children?.length &&
+    response.parent[key]?.parent?.children[0].child &&
+    response.parent[key]?.parent?.children[0].child.id
+  );
+
+  const dataCoupleParser = (people: People, item: Couple): Couple => {
+    let couple = ({} as any);
     if (item.wife && item.wife.sure_name !== people.sure_name) {
       couple = {...item.wife, children: []}
     }
@@ -37,60 +39,90 @@ export default () => {
     }
     if (item.children && item.children.length && item.children[0].child) {
       item.children.forEach((children) => {
-        couple.children.push(children.child)
+        if (children.child && children.child.id) {
+          couple.children?.push(children)
+        }
       })
     }
     return couple
   };
 
-  const dataParser = useCallback((response: FindById) => {
-    let result = [{...response, couples: []}] as any;
-    if (response) {
-      // Parent
-      let parent = {
-        father: {
-          id: "",
-          sure_name: "",
-        },
-        mother: {
-          id: "",
-          sure_name: "",
+  const dataResultCoupleParser = useCallback((response: FindById) => {
+    let result = ([{...response, couples: ([] as Array<People>)}] as Array<People>);
+    if (response.couples && response.couples.length) {
+      response.couples.forEach((item) => {
+        const couple = dataCoupleParser(response, item);
+        if (couple && couple.id) {
+          result[0].couples.push(couple)
         }
-      };
-      if (response.parent && response.parent.husband && response.parent.husband.id) {
-        parent.father = response.parent.husband;
+      });
+    }
+    return result
+  }, []);
+
+  const dataParser = useCallback((response: FindById) => {
+    let result: Array<People> = [{...({couples: ([] as Array<People>)} as People)}];
+    if (response) {
+      let couple: Couple;
+      // Parent
+      let parent = initialStatePeoples;
+      let resParsed: any;
+      if (hasParentBrother(ParentKey.husband, response) || hasParentBrother(ParentKey.wife, response)) {
+        parent = [];
+        response.parent.husband?.parent?.children?.forEach(({child}) => {
+          if (child && child.id) {
+            let couples = child.couples.map((itemCouple) => dataCoupleParser(child, itemCouple));
+            // @ts-ignore
+            parent.push({...child, couples})
+          }
+        });
+      } else if (response.parent && response.parent.husband && response.parent.husband.id) {
+        parent = [{...response.parent.husband, couples: [(response.parent.wife as Couple)]}];
+        if (response.parent && response.parent.children && response.parent.children.length && response.parent.children[0].child && response.parent.children[0].child.id) {
+          result = [];
+          // Children
+          response.parent.children.forEach(({child}) => {
+            resParsed = {...child, couples: []} as any;
+            if (child && "couples" in child && child.couples && child.couples.length) {
+              child.couples.forEach((itemCouple) => {
+                couple = dataCoupleParser(child, itemCouple);
+                if (couple && couple.id) {
+                  resParsed.couples.push(couple)
+                }
+              })
+            }
+            result.push(resParsed);
+          });
+          // Children
+        } else {
+          result = dataResultCoupleParser(response)
+        }
+      } else {
+        result = dataResultCoupleParser(response)
       }
-      if (response.parent && response.parent.wife && response.parent.wife.id) {
-        parent.mother = response.parent.wife;
-      }
-      setParent(parent);
       // Parent
 
-      let couple;
-      if (response.parent && response.parent.children && response.parent.children.length && response.parent.children[0].child && response.parent.children[0].child.id) {
-        let resParsed: any;
-        result = [];
-        response.parent.children.forEach(({child: item}) => {
-          resParsed = {...item, couples: []} as any;
-          if (item && "couples" in item && item.couples && item.couples.length) {
-            item.couples.forEach((itemCouple) => {
-              couple = dataCoupleParser(item, itemCouple);
-              if (couple && couple.id) {
-                resParsed.couples.push(couple)
+      if (parent && parent.length) {
+        result = parent.map((item) => {
+          if ((item.id === response?.parent?.husband?.id) || (item.id === response?.parent?.wife?.id)) {
+            if (item.couples && item.couples.length) {
+              item = {
+                // @ts-ignore
+                ...item, couples: item.couples.map((itemCouple) => {
+                  if ((item.id === response?.parent?.husband?.id) || (item.id === response?.parent?.wife?.id)) {
+                    const children = result.map((itemResult) => ({child: itemResult}));
+                    return {...itemCouple, ...(children && children.length && children[0].child && children[0].child.id) ? {children} : {}}
+                  }
+                  return itemCouple
+                })
               }
-            })
+            }
           }
-          result.push(resParsed)
-        })
-      } else if (response.couples) {
-        response.couples.forEach((item) => {
-          couple = dataCoupleParser(response, item);
-          if (couple && couple.id) {
-            result[0].couples.push(couple)
-          }
+          return item;
         });
       }
     }
+    // console.log(result);
     setPeoples(result);
     setLoading(false);
   }, []);
@@ -105,55 +137,10 @@ export default () => {
   }, [dataParser, peopleID]);
 
   if (isLoading) return (<div/>);
-  const peopleList = (peoples && peoples.length && peoples[0].id)
-    ? (<ul>
-      {peoples.map((people, ip) =>
-        <li key={`people${ip + people.id}`} className='wrapper-card'>
-          <Card title={people.sure_name} link={`/peoples/${people.id}`} selected={peopleID === people.id}/>
-          {/*Couple*/}
-          {(people.couples && people.couples.length && people.couples[0].id)
-            ? people.couples.map((couple: { id: string, sure_name: string, children: Array<any> }) =>
-              <LineageCouple key={`couple${ip + people.id + couple.id + (
-                (couple.children && couple.children.length && couple.children[0].id) ? couple.children[0].id : 0
-              )}`} item={couple}>
-                {/*Children*/}
-                {(couple.children && couple.children.length && couple.children[0].id)
-                  ? (<ul>
-                    {
-                      couple.children.map((child: People) =>
-                        <li key={`children${ip + people.id + couple.id + child.id}`}>
-                          <Card title={child.sure_name} link={`/peoples/${child.id}`}/>
-                        </li>
-                      )
-                    }
-                  </ul>)
-                  : null}
-                {/*Children*/}
-              </LineageCouple>
-            )
-            : null}
-          {/*Couple*/}
-        </li>)}
-    </ul>)
-    : (<li>Not found</li>);
+
   return (
     <div>
-      {
-        (parent && parent.mother.id && parent.father.id)
-          ?
-          <ul>
-            <li className='wrapper-card'>
-              <Card title={parent.father.sure_name} link={`/peoples/${parent.father.id}`}/>
-              <ul>
-                <li className='wrapper-card'>
-                  <Card title={parent.mother.sure_name} link={`/peoples/${parent.mother.id}`}/>
-                </li>
-                <li>{peopleList}</li>
-              </ul>
-            </li>
-          </ul>
-          : peopleList
-      }
+      <Lineage list={peoples} selectedID={peopleID}/>
     </div>
   )
 }
