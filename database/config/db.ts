@@ -1,28 +1,11 @@
-const database = "silsilah_";
+const dotenv = require('dotenv');
+dotenv && dotenv.config();
 
 module.exports = {
-    dev: {
-        username: "postgres",
-        password: "postgres",
-        database: database + 'dev',
-        host: "localhost",
-        port: 32768,
-        dialect: "postgres"
-    },
-    test: {
-        username: "postgres",
-        password: "postgres",
-        database: database + 'test',
-        host: "localhost",
-        port: 32768,
-        dialect: "postgres"
-    },
-    production: {
-        username: "postgres",
-        password: "postgres",
-        database: database + 'prod',
-        host: "localhost",
-        port: 32768,
-        dialect: "postgres"
-    }
+  username: process.env.DB_USER,
+  password: process.env.DB_PASS,
+  database: process.env.DB_NAME,
+  host    : process.env.DB_HOST,
+  port    : process.env.DB_PORT,
+  dialect : 'postgres'
 };
