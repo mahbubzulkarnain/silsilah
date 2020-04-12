@@ -1,5 +1,6 @@
 import { config } from "dotenv";
 import { Sequelize } from "sequelize";
+export {q, quote} from './utils'
 
 config();
 

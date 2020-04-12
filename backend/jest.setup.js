@@ -1,10 +1,4 @@
-try {
-  require('dotenv')
-    .config();
-} catch (e) {
-  // eslint-disable-next-line no-console
-  console.log(e);
-}
+require("dotenv")?.config();
 
 process.env.NODE_ENV = 'DEV';
 

@@ -1,6 +1,6 @@
 import { response } from "graphql-response-parser";
 import { IResponse } from "../../../interfaces/IResponse";
-import db from "../../../vendors/postgre";
+import db, { q } from "../../../vendors/postgre";
 import { TBNAME } from "../constant";
 
 export default async ({ query: { id: peopleId, limit = 10, offset = 0 } }): Promise<IResponse> => {
@@ -9,7 +9,7 @@ export default async ({ query: { id: peopleId, limit = 10, offset = 0 } }): Prom
     LEFT JOIN (
         SELECT husband_id, wife_id, date_of_marriage, date_of_divorce FROM couple
     ) C ON C.husband_id = people.id OR C.wife_id = people.id
-    WHERE (C.husband_id = $$${peopleId}$$ OR C.wife_id = $$${peopleId}$$) AND people.id != $$${peopleId}$$
+    WHERE (C.husband_id = ${q(peopleId)} OR C.wife_id = ${q(peopleId)}) AND people.id != ${q(peopleId)}
     GROUP BY people.id, C.date_of_marriage, C.date_of_divorce
     ORDER BY C.date_of_marriage, C.date_of_divorce
   `));
