@@ -1,0 +1,26 @@
+nav {
+    width: 16em;
+    display: flex;
+    position: fixed;
+    top: 0;
+    right: 0;
+    left: auto;
+    justify-content: flex-end !important;
+    align-items: center;
+    padding: .5rem 1rem
+}
+
+nav > .nav-item > .nav-link,
+nav > .nav-item > .nav-icon {
+    display: block;
+    padding: .5rem 1rem;
+    text-transform: uppercase;
+    color: #ec5a62;
+}
+
+nav > .nav-item > .nav-link.active,
+nav > .nav-item > .nav-icon.active {
+    background: #ec5a62 !important;
+    color: white;
+    border-radius: .3em;
+}

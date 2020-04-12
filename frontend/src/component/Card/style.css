@@ -1,10 +1,14 @@
-a {
-    text-decoration: none;
-}
-
 .card {
-    background: white;
     padding: 10px;
     border-radius: 5px;
     margin: 5px;
+    font-family: Roboto, sans-serif;
+    background: white;
+    color: #ec5a62;
+}
+
+.card:hover,
+.card.selected {
+    background: #ec5a62;
+    color: white;
 }
