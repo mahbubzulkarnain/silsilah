@@ -1,13 +1,16 @@
-import React, {useEffect, useState} from 'react'
+import React, { useEffect, useState } from 'react'
 
 import './style.css';
 import find from "./graphql";
 
-import {Link} from 'react-router-dom'
+import Lineage from "../../../component/Lineage";
+import Navbar from "../../../component/Navbar";
+import { People } from "../interface";
 
-export default ({data: any}: any) => {
+export default ({ data: any }: any) => {
+  const initialStatePeoples = ([] as Array<People>);
   const [isLoading, setLoading] = useState(true);
-  const [peoples, setPeoples] = useState([{id: "", sure_name: ""}]);
+  const [peoples, setPeoples] = useState(initialStatePeoples);
 
   useEffect(() => {
     find().then((data) => {
@@ -20,15 +23,8 @@ export default ({data: any}: any) => {
 
   return (
     <div>
-      <ul>
-        {
-          peoples
-            ? peoples.map((item: any, i: number) => <li key={i}>
-              <Link to={`/peoples/${item.id}`}> {item.sure_name}</Link>
-            </li>)
-            : (<li>Not found</li>)
-        },
-      </ul>
+      <Navbar/>
+      <Lineage list={ peoples } selectedID=""/>
     </div>
   )
 }
