@@ -1,2 +1,2 @@
-export const TBNAME = "couple";
+export const TBNAME = "Couples";
 

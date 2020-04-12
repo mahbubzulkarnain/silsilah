@@ -1,10 +1,6 @@
-try {
-  require("dotenv").config(); // tslint:disable-line:no-var-requires
-} catch (e) {
-  log.error(errors(e));
-}
+const dotenv = require('dotenv');
+dotenv && dotenv.config();
 
-import { errors } from "graphql-response-parser";
 import app, { hostname, port } from "./src/app";
 import graphql, { graphqlPath } from "./src/graphql";
 import log from "./src/utils/log";
@@ -14,7 +10,7 @@ graphql
     app,
     cors: {
       credentials: true,
-      origin: true,
+      origin     : true,
     },
     path: graphqlPath,
   });
