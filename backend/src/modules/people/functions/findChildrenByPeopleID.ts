@@ -1,6 +1,6 @@
 import { response } from "graphql-response-parser";
 import { IResponse } from "../../../interfaces/IResponse";
-import db from "../../../vendors/postgre";
+import db, { q } from "../../../vendors/postgre";
 import { TBNAME } from "../constant";
 
 export default async ({ query: { id: peopleId, limit = 10, offset = 0 } }): Promise<IResponse> => {
@@ -12,7 +12,7 @@ export default async ({ query: { id: peopleId, limit = 10, offset = 0 } }): Prom
             SELECT parent_id, child_id FROM children
         ) CH ON CH.parent_id = C.id
     ) C ON C.child_id = people.id
-    WHERE (C.husband_id = $$${peopleId}$$ OR C.wife_id = $$${peopleId}$$) AND people.id != $$${peopleId}$$
+    WHERE (C.husband_id = ${q(peopleId)} OR C.wife_id = ${q(peopleId)}) AND people.id != ${q(peopleId)}
     GROUP BY people.id, people.date_of_birth
     ORDER BY people.date_of_birth;
   `));

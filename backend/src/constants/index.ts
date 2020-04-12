@@ -1,4 +1,4 @@
 export default Object.freeze({
-  limit : 10,
+  limit : 0,
   offset: 0,
 });
