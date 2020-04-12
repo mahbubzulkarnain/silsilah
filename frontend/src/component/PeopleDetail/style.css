@@ -1,0 +1,33 @@
+.people-detail {
+    display: flex;
+    width: 16em;
+    position: fixed;
+    top: 3.3em;
+    right: 0;
+    left: auto;
+    background: whitesmoke;
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+    padding-left: 1rem;
+    height: 100vh;
+    vertical-align: top;
+    font-family: "Roboto Light", sans-serif;
+}
+
+.people-detail > .people-detail__info {
+    width: 100%;
+}
+
+.people-detail > .people-detail__info label {
+    text-transform: capitalize;
+}
+
+.people-detail > .people-detail__info > .people-detail__info__sure-name,
+.people-detail > .people-detail__info > .people-detail__info__nick-name {
+    text-align: center;
+    justify-content: center;
+}
+
+.people-detail > .people-detail__info > .people-detail__info__sure-name {
+    font-weight: bold;
+}

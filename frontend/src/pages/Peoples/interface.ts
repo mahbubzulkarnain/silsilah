@@ -1,13 +1,13 @@
-import {Couple} from "../Couples/interface";
-import {Children} from "../Children/interface";
+import { Couple } from "../Couples/interface";
+import { Children } from "../Children/interface";
 
 export enum ParentKey {
   husband = "husband",
-  wife = "wife"
+  wife    = "wife"
 }
 
 export interface People {
-    item: Couple[];
+  item: Couple[];
   id: string;
   address?: string;
   blood_type?: string;

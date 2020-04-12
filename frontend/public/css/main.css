@@ -1,10 +1,5 @@
 html {
     font-family: 'Roboto', sans-serif;
-    background: gainsboro;
-}
-
-html, body {
-    height: 100%;
 }
 
 li {
@@ -20,4 +15,9 @@ body {
 .panel {
     background: white;
     padding: 0.556em;
+}
+
+a, a:hover, a:active {
+    text-decoration: none;
+    color: black;
 }
