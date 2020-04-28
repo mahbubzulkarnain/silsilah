@@ -22,9 +22,9 @@ export default ({ data: any }: any) => {
   if (isLoading) return (<div/>);
 
   return (
-    <div>
+    <>
       <Navbar/>
       <Lineage list={ peoples } selectedID=""/>
-    </div>
+    </>
   )
 }
