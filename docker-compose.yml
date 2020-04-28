@@ -1,0 +1,30 @@
+version: '3'
+services:
+  database:
+    image: postgres:latest
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    ports:
+      - '4000:4000'
+    restart: on-failure
+    container_name: silsilah-backend
+    volumes:
+      - /app/node_modules # Inside the container, don't try to override this folder, just leave as is
+      - ./backend:/app # Look at the server directory and copy everything into the app folder in the container
+    depends_on:
+      - database
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    ports:
+      - '3000:3000'
+    volumes:
+      - /app/node_modules
+      - ./frontend:/app
+    restart: on-failure
+    container_name: silsilah-frontend
+    depends_on:
+      - backend
