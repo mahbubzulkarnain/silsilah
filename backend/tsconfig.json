@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
     "outDir": "dist",
-    "sourceMap": true,
+    "sourceMap": false,
     "module": "commonjs",
     "target": "es2019",
     "lib": [
@@ -19,8 +19,9 @@
     "theme": "default"
   },
   "include": [
-    "src/**/*",
-    "node_modules/@types/jest/index.d.ts"
+    "index.ts",
+    "node_modules/@types/jest/index.d.ts",
+    "src/**/*"
   ],
   "exclude": [
     "__tests__",

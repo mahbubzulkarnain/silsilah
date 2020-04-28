@@ -1,4 +1,4 @@
-import gql from "graphql-tag";
+import gql from 'graphql-tag';
 
 export default gql`
 directive @auth(roles: [Roles]) on FIELD_DEFINITION

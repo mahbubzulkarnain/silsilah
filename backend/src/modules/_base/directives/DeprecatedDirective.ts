@@ -1,13 +1,14 @@
-import { GraphQLEnumValue, GraphQLField } from "graphql";
-import { SchemaDirectiveVisitor } from "graphql-tools";
+/* eslint-disable no-param-reassign */
+import { GraphQLEnumValue, GraphQLField } from 'graphql';
+import { SchemaDirectiveVisitor } from 'graphql-tools';
 
 class DeprecatedDirective extends SchemaDirectiveVisitor {
-  public visitFieldDefinition(field: GraphQLField<any, any>) {
+  public visitFieldDefinition(field: GraphQLField<any, any>): void {
     field.isDeprecated = true;
     field.deprecationReason = this.args.reason;
   }
 
-  public visitEnumValue(value: GraphQLEnumValue) {
+  public visitEnumValue(value: GraphQLEnumValue): void {
     value.isDeprecated = true;
     value.deprecationReason = this.args.reason;
   }
@@ -15,5 +16,5 @@ class DeprecatedDirective extends SchemaDirectiveVisitor {
 
 
 export default {
-  deprecated: DeprecatedDirective,
+  deprecated : DeprecatedDirective,
 };

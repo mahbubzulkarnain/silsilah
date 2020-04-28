@@ -1,4 +1,4 @@
-import { IInput } from "../_base/interface";
+import { IInput } from '../_base/interface';
 
 export interface ICouple {
   id: string;

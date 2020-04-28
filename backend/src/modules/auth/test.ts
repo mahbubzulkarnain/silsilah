@@ -1,10 +1,11 @@
-import { createTestClient } from "apollo-server-testing";
-import gql from "graphql-tag";
-import auth from "../../constants/auth";
-import constructTestServer from "../../utils/constructTestServer";
-import { IUser } from "../user/interface";
-import verifyIdToken from "./functions/verifyIdToken";
-import { IAuthInput } from "./interface";
+import { createTestClient } from 'apollo-server-testing';
+import admin from 'firebase-admin';
+import gql from 'graphql-tag';
+import auth from '../../constants/auth';
+import constructTestServer from '../../utils/constructTestServer';
+import { IUser } from '../user/interface';
+import verifyIdToken from './functions/verifyIdToken';
+import { IAuthInput } from './interface';
 
 export const MUTATION_LOGIN = gql`
     mutation login($input: UserInput!){
@@ -19,13 +20,13 @@ export const MUTATION_LOGIN = gql`
     }
 `;
 
-export const LOGIN = async (email, password): Promise<{ user: IUser, token: string }> => {
+export const LOGIN = async (email, password): Promise<{ user: admin.auth.DecodedIdToken | IUser; token: any }> => {
   const server = constructTestServer({});
   const { mutate } = createTestClient(server);
   const input: IAuthInput = { email, password };
   const { data } = await mutate({
-    mutation : MUTATION_LOGIN,
-    variables: { input },
+    mutation  : MUTATION_LOGIN,
+    variables : { input },
   });
   const token = data.login.idToken;
   const user = await verifyIdToken(token);
@@ -33,8 +34,8 @@ export const LOGIN = async (email, password): Promise<{ user: IUser, token: stri
   return { user, token };
 };
 
-describe("Mutation", () => {
-  it("should success", async () => {
+describe('Mutation', () => {
+  it('should success', async () => {
     const { user } = await LOGIN(auth.email, auth.password);
     expect(user.email).toEqual(auth.email);
   });

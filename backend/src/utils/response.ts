@@ -1,52 +1,56 @@
-const ENV = (process.env.NODE_ENV || "dev").toLowerCase();
+import log from './log';
 
-export const MOCK_RESULT = (parent, args, context, info) => ({
-  config    : {},
-  data      : {
-    edges     : {
-      args   : () => {
+const ENV = (process.env.NODE_ENV || 'dev').toLowerCase();
+
+export const MOCK_RESULT = (parent, args, context, info): any => ({
+  config : {},
+  data   : {
+    edges : {
+      args : (): string => {
         try {
           return JSON.stringify(args);
         } catch (e) {
-          console.log(e); // tslint:disable-line:no-console
-          return "";
+          log.error(e);
+          return '';
         }
       },
-      context: () => {
+      context : (): string => {
         try {
           return JSON.stringify(context);
         } catch (e) {
-          console.log(e); // tslint:disable-line:no-console
-          return "";
+          log.error(e);
+          return '';
         }
       },
-      info   : () => {
+      info : (): string => {
         try {
           return JSON.stringify(info);
         } catch (e) {
-          console.log(e); // tslint:disable-line:no-console
-          return "";
+          log.error(e);
+          return '';
         }
       },
-      parent : () => {
+      parent : (): string => {
         try {
           return JSON.stringify(parent);
         } catch (e) {
-          console.log(e); // tslint:disable-line:no-console
-          return "";
+          log.error(e);
+          return '';
         }
       },
     },
-    message   : `Server has been started, with stage ${ENV}.`,
-    pageInfo  : {
-      hasNextPage: false,
-      hasPrevPage: false,
-      nextCursor : "",
-      prevCursor : "",
+    message  : `Server has been started, with stage ${ENV}.`,
+    pageInfo : {
+      hasNextPage : false,
+      hasPrevPage : false,
+      nextCursor  : '',
+      prevCursor  : '',
     },
-    totalCount: 0,
+    totalCount : 0,
   },
-  headers   : {},
-  status    : 200,
-  statusText: "200",
+  headers    : {},
+  status     : 200,
+  statusText : '200',
 });
+
+export default '';

@@ -1,13 +1,13 @@
-import { ApolloServer } from "apollo-server";
-import { ApolloServerExpressConfig } from "apollo-server-express";
+import { ApolloServer } from 'apollo-server'; // eslint-disable-line import/no-extraneous-dependencies
+import { ApolloServerExpressConfig } from 'apollo-server-express';
 
-import * as importGraphql from "../graphql";
+import * as importGraphql from '../graphql';
 
-export default ({ context, dataSources, schema }: ApolloServerExpressConfig) => {
+export default ({ context, dataSources, schema }: ApolloServerExpressConfig): ApolloServer => {
   const config = {
-    context    : context ? context : require("../configs/context").default,
-    dataSources: dataSources ? dataSources : importGraphql.dataSources,
-    schema     : schema ? schema : importGraphql.schema,
+    context     : context || require('../configs/context').default,
+    dataSources : dataSources || importGraphql.dataSources,
+    schema      : schema || importGraphql.schema,
   };
   return new ApolloServer(config);
 };

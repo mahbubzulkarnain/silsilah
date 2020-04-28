@@ -1,9 +1,8 @@
-import { auth } from "../../../vendors/firebase";
+import admin from 'firebase-admin';
+import { auth } from '../../../vendors/firebase';
 
-export default (token: string) => new Promise(async (resolve, reject) => {
-  try {
-    return resolve(await auth.verifySessionCookie(token, true));
-  } catch (e) {
-    return reject(new Error("You are not authorized"));
-  }
-});
+import DecodedIdToken = admin.auth.DecodedIdToken;
+
+export default (token: string): Promise<DecodedIdToken> => auth
+  .verifySessionCookie(token, true)
+  .catch(() => { throw new Error('You are not authorized'); });
