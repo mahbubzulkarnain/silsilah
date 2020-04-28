@@ -1,7 +1,20 @@
-import { response } from "graphql-response-parser";
-import { IResponse } from "../../../interfaces/IResponse";
-import db, { q } from "../../../vendors/postgre";
-import { TBNAME } from "../constant";
+import { response } from 'graphql-response-parser';
+import { IResponse } from '../../../interfaces/IResponse';
+import db, { q } from '../../../vendors/postgre';
+import { TBNAME } from '../constant';
+
+const queryGenerator = (query): string => `
+  select
+    (
+      select array_to_json(array_agg(e))
+      from (
+        ${query}
+      ) e
+    ) "result",
+    (
+      select count(id) from "${TBNAME}" e
+    ) "totalCount"
+`;
 
 export default async ({ query: { id: peopleId, limit = 10, offset = 0 } }): Promise<IResponse> => {
   const [[{ result, totalCount }]] = await db.query(queryGenerator(`
@@ -18,16 +31,3 @@ export default async ({ query: { id: peopleId, limit = 10, offset = 0 } }): Prom
     { limit, offset, totalCount },
   );
 };
-
-const queryGenerator = (query) => `
-  select
-    (
-      select array_to_json(array_agg(e))
-      from (
-        ${query}
-      ) e
-    ) "result",
-    (
-      select count(id) from "${TBNAME}" e
-    ) "totalCount"
-`;

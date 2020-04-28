@@ -1,11 +1,11 @@
-export const quote = `$SilsilaH_${Math.floor(Math.random() * (new Date()).getTime())}$`;
+export const quote = `$SH_${Math.floor(Math.random() * (new Date()).getTime())}$`;
 
-export const q = (value) => {
+export const q = (value): string | boolean => {
   if (typeof value === 'boolean') {
     return value;
   }
   if (!value) {
-    return "";
+    return '';
   }
   if (Array.isArray(value)) {
     return quote + value?.join(`${quote}, ${quote}`) + quote;
@@ -13,4 +13,4 @@ export const q = (value) => {
   return quote + value + quote;
 };
 
-export const qPagination = (limit, offset) => !!+limit ? `LIMIT ${limit} OFFSET ${offset}` : '';
+export const qPagination = (limit, offset): string => (+limit ? `LIMIT ${limit} OFFSET ${offset}` : '');

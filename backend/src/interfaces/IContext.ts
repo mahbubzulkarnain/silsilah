@@ -1,4 +1,4 @@
-import { IServiceAPI } from "./IDataSources";
+import { IServiceAPI } from './IDataSources';
 
 export interface IContext {
   req?: any;

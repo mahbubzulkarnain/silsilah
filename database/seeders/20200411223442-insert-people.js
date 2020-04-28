@@ -4,11 +4,12 @@ const { tableName } = require("../migrations/20200411203200-create-people");
 
 const records = [
   {
-    sure_name: 'Mahbub Zulkarnain',
-    nick_name: 'Mahbub',
-    gender   : 'MAN',
-    email    : 'mahbub.zulkarnain[at]gmail.com',
-    address  : 'Cirebon, Jawa Barat, Indonesia'
+    sure_name    : 'Mahbub Zulkarnain',
+    nick_name    : 'Mahbub',
+    gender       : 'MAN',
+    email        : 'mahbub.zulkarnain[at]gmail.com',
+    address      : 'Cirebon, Jawa Barat, Indonesia',
+    date_of_birth: '10-09-1993',
   },
   { sure_name: 'Adam', gender: 'MAN' },
   { sure_name: 'Siti Hawa', gender: 'WOMEN' },

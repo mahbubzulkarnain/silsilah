@@ -1,28 +1,28 @@
-import { errors, response } from "graphql-response-parser";
-import { IContext } from "../../interfaces/IContext";
-import { IResponse } from "../../interfaces/IResponse";
-import { IUser } from "./interface";
+import { errors, response } from 'graphql-response-parser';
+import { IContext } from '../../interfaces/IContext';
+import { IResponse } from '../../interfaces/IResponse';
+import { IUser } from './interface';
 
 export default {
-  User: {
-    displayName: (user: IUser) => user.displayName,
-    email      : (user: IUser) => user.email,
-    phoneNumber: (user: IUser) => user.phoneNumber,
-    photoURL   : (user: IUser) => user.photoURL,
+  User : {
+    displayName : (user: IUser): string => user.displayName,
+    email       : (user: IUser): string => user.email,
+    phoneNumber : (user: IUser): string => user.phoneNumber,
+    photoURL    : (user: IUser): string => user.photoURL,
   },
 
-  Mutation: {},
-  Query   : {
-    me: (
+  Mutation : {},
+  Query    : {
+    me : async (
       source,
       props,
       { user, dataSources: { userAPI } }: IContext,
-    ): Promise<IResponse | Error> => new Promise(async (resolve, reject) => {
+    ): Promise<IResponse | Error> => {
       try {
-        resolve(response(await userAPI.getById(user.uid)));
+        return response(await userAPI.getById(user.uid));
       } catch (e) {
-        reject(errors(e));
+        throw errors(e);
       }
-    }),
+    },
   },
 };
