@@ -139,10 +139,10 @@ export default () => {
   if (isLoading) return (<div/>);
 
   return (
-    <div>
+    <>
       <Navbar/>
       <PeopleDetail people={ currentPeople }/>
       <Lineage list={ peoples } selectedID={ peopleID }/>
-    </div>
+    </>
   )
 }
