@@ -1,20 +1,20 @@
-import { createTestClient } from "apollo-server-testing";
-import gql from "graphql-tag";
-import { IPageInfo, IResponse } from "../../interfaces/IResponse";
-import constructTestServer from "../../utils/constructTestServer";
+import { createTestClient } from 'apollo-server-testing';
+import gql from 'graphql-tag';
+import { IPageInfo, IResponse } from '../../interfaces/IResponse';
+import constructTestServer from '../../utils/constructTestServer';
 
 export const PAGE_INFO_RESPONSE: IPageInfo = {
-  hasNextPage: expect.any(Boolean),
-  hasPrevPage: expect.any(Boolean),
-  nextCursor : expect.any(String),
-  prevCursor : expect.any(String),
+  hasNextPage : expect.any(Boolean),
+  hasPrevPage : expect.any(Boolean),
+  nextCursor  : expect.any(String),
+  prevCursor  : expect.any(String),
 };
 
 export const DEFAULT_LIST_RESPONSE: IResponse = {
-  edges     : expect.anything(),
-  message   : expect.any(String),
-  pageInfo  : PAGE_INFO_RESPONSE,
-  totalCount: expect.any(Number),
+  edges      : expect.anything(),
+  message    : expect.any(String),
+  pageInfo   : PAGE_INFO_RESPONSE,
+  totalCount : expect.any(Number),
 };
 
 export const TYPE_PAGE_INFO = `
@@ -56,30 +56,30 @@ export const MUTATION_PING = gql`
     }
 `;
 
-describe("Ping", () => {
-  describe("Queries", () => {
-    it("should ping success", async () => {
+describe('Ping', () => {
+  describe('Queries', () => {
+    it('should ping success', async () => {
       const server = constructTestServer({});
       const { query } = createTestClient(server);
       const { data, errors } = await query({
-        query: QUERY_PING,
+        query : QUERY_PING,
       });
       expect(data).toMatchObject({
-        ping: DEFAULT_LIST_RESPONSE,
+        ping : DEFAULT_LIST_RESPONSE,
       });
       expect(errors).toEqual(undefined);
     });
   });
 
-  describe("Mutations", () => {
-    it("should ping success", async () => {
+  describe('Mutations', () => {
+    it('should ping success', async () => {
       const server = constructTestServer({});
       const { mutate } = createTestClient(server);
       const { data, errors } = await mutate({
-        mutation: MUTATION_PING,
+        mutation : MUTATION_PING,
       });
       expect(data).toMatchObject({
-        ping: DEFAULT_LIST_RESPONSE,
+        ping : DEFAULT_LIST_RESPONSE,
       });
       expect(errors).toEqual(undefined);
     });

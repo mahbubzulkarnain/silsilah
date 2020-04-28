@@ -1,9 +1,11 @@
-import login from "./functions/login";
-import register from "./functions/register";
+import { auth } from 'firebase-admin';
+import login from './functions/login';
+import register from './functions/register';
+import { ILoginResponse } from './interface';
 
 export default {
-  Mutation: {
-    login   : async (obj, { input: { email, password } }) => await login(email, password),
-    register: async (obj, { input }) => await register(input),
+  Mutation : {
+    login    : (obj, { input: { email, password } }): Promise<ILoginResponse> => login(email, password),
+    register : (obj, { input }): Promise<auth.UserRecord | Error> => register(input),
   },
 };

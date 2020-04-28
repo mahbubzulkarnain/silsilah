@@ -1,8 +1,8 @@
-import { RESTDataSource } from "apollo-datasource-rest";
-import DataLoader from "dataloader";
-import constant from "../../constants";
-import find from "./functions/find";
-import { ICoupleInput } from "./interface";
+import { RESTDataSource } from 'apollo-datasource-rest';
+import DataLoader from 'dataloader';
+import constant from '../../constants';
+import find from './functions/find';
+import { ICoupleInput } from './interface';
 
 export default class CoupleAPI extends RESTDataSource {
   private dataLoader = new DataLoader(async (ids: string[]) => {
@@ -10,23 +10,19 @@ export default class CoupleAPI extends RESTDataSource {
     return edges || [];
   });
 
-  public getById(id) {
-    try {
-      if (!id) { throw Error("Invalid id"); }
-      return this.dataLoader.load(id);
-    } catch (e) {
-      return null;
-    }
+  public getById(id): Promise<unknown> {
+    if (!id) return null;
+    return this.dataLoader.load(id);
   }
 
   public async getList(
     { limit = 10, offset = 0, ...props }: ICoupleInput = { limit: constant.limit, offset: constant.offset },
-  ) {
+  ): Promise<unknown[]> {
     const { edges } = await find({ query: { limit, offset, ...props } });
     return this.dataLoader.loadMany(edges);
   }
 
-  protected willSendRequest(request) {
-    request.headers.set("Authorization", this.context.token);
+  protected willSendRequest(request): void {
+    request.headers.set('Authorization', this.context.token);
   }
 }

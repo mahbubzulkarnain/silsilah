@@ -1,4 +1,4 @@
 export default {
-  Mutation: {},
-  Query   : {},
+  Mutation : {},
+  Query    : {},
 };

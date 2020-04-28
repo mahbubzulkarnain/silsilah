@@ -1,2 +1,3 @@
-export const TBNAME = "Peoples";
+export const TBNAME = 'Peoples';
 
+export default '';
