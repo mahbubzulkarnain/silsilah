@@ -131,7 +131,7 @@ export default () => {
       findById(peopleID).then((data) => {
         setPeople(data);
         setPeoples(data);
-        dataParser(data)
+        dataParser(data);
       })
     }
   }, [dataParser, peopleID]);
