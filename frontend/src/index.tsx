@@ -5,6 +5,7 @@ import * as serviceWorker from './serviceWorker';
 import { createContext } from 'react';
 import Router from './router'
 
+import './i18n'
 import './style.css'
 
 const Context = (createContext(null)).Provider;
