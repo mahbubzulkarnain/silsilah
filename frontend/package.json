@@ -45,7 +45,7 @@
     "react-router-dom": "^5.2.0",
     "react-scripts": "^3.4.4",
     "typescript": "^3.9.7",
-    "xlsx": "^0.15.6"
+    "xlsx": "^0.17.0"
   },
   "devDependencies": {
     "@types/react": "^16.9.53",
