@@ -52,7 +52,7 @@
     "express": "^4.17.1",
     "express-pino-logger": "^4.0.0",
     "firebase": "^7.24.0",
-    "firebase-admin": "^8.13.0",
+    "firebase-admin": "^11.4.1",
     "googleapis": "^44.0.0",
     "graphql": "^14.7.0",
     "graphql-response-parser": "0.0.5",
